@@ -1,0 +1,17 @@
+{
+  "restartable": "rs",
+  "verbose": false,
+  "delay": "3000",
+  "events": {
+    
+  },
+  "ext": "ts js json",
+  "ignore": [
+    "node_modules/**/*",
+    "node_modules/**/node_modules",
+    ".hg",
+    ".git",
+    ".idea",
+    "src/**/*.spec.ts"
+  ]
+}
