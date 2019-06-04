@@ -23,5 +23,18 @@ export default class Base {
         return new service(this.db, this.session)
     }
 
+    protected setQueryOptions(param){
+        const rs:any = {};
+        if(param.size){
+            rs.limit = _.toNumber(param.size);
+
+            if(param.page){
+                rs.skip = _.toNumber(param.size) * (_.toNumber(param.page)-1);
+            }
+        }
+
+        return rs;
+    }
+
     
 }

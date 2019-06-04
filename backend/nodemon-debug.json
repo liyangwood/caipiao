@@ -17,5 +17,5 @@
     ".idea",
     "src/**/*.spec.ts"
   ],
-  "exec": "mkdir -p .upload && NODE_ENV=dev ts-node --inspect ./index.ts"
+  "exec": "NODE_ENV=dev ts-node ./index.ts"
 }

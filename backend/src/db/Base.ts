@@ -30,14 +30,14 @@ export default abstract class {
 
     protected buildSchema(){
         const schema = new mongoose.Schema(_.extend({
-            createdAt: {
-                type: Date,
-                default: Date.now
-            },
-            updatedAt: {
-                type: Date,
-                default: Date.now
-            }
+            // createdAt: {
+            //     type: Date,
+            //     default: Date.now
+            // },
+            // updatedAt: {
+            //     type: Date,
+            //     default: Date.now
+            // }
         }, this.getSchema()), _.extend({
             timestamps: true
         }, this.getSchemaOption()))
@@ -96,8 +96,16 @@ export default abstract class {
     public async count(query): Promise<number>{
         return await this.db.count(query)
     }
-    public async list(query, sort?, limit?): Promise<[Document]>{
-        return await this.db.find(query).sort(sort || {}).limit(_.toNumber(limit) || 1000)
+    public async list(query, opts:any): Promise<[Document]>{
+        const config:any = {
+            limit : opts.limit || 100,
+            skip : opts.skip || 0
+        };
+        if(opts.sort){
+            config.sort = opts.sort;
+        }
+        const rs = await this.db.find(query, this.reject_fields, config);
+        return rs;
     }
 
     public getAggregate(){

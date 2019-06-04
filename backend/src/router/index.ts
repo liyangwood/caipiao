@@ -3,7 +3,8 @@ import db from '../db'
 // import {utilCrypto} from '../utility'
 import * as moment from 'moment'
 
-import ping from './ping'
+import ping from './ping';
+import ssq from './ssq';
 
 
 
@@ -54,7 +55,8 @@ export const middleware = async (req: Request, res: Response, next: NextFunction
 
 const router = Router()
 
-router.use('/ping', ping)
+router.use('/ping', ping);
+router.use('/ssq', ssq);
 
 
 router.use((req, res) => {

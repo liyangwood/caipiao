@@ -1,5 +1,6 @@
 import * as mongoose from 'mongoose'
 import Test from './Test'
+import Ssq from './Ssq';
 
 
 import * as uuid from 'uuid'
@@ -78,7 +79,7 @@ export default class {
 
     private initDB(db){
         this.db.Test = new Test(db)
-        
+        this.db.Ssq = new Ssq(db);
     }
 
     public getModel(name: string){
