@@ -16,7 +16,9 @@ export default class extends Base {
       red_3 : String,
       red_4 : String,
       red_5 : String,
-      red_6 : String
+      red_6 : String,
+
+      caculate : Object
     }
   }
   protected getName(){

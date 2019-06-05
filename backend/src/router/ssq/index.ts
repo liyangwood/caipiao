@@ -6,7 +6,7 @@ export default Base.setRouter([
   {
     path : '/list',
     router : list,
-    method : 'get'
+    method : 'all'
   },
   {
     path : '/count',
