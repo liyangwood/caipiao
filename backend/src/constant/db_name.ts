@@ -1,3 +1,4 @@
 export default {
-  SSQ : 'Ssq'
+  SSQ : 'Ssq',
+  DLT : 'Dlt'
 };
