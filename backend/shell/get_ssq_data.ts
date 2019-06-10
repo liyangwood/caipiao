@@ -11,7 +11,13 @@ const F = {
   getHtmlByUrl(url, cb){
     request.get(url, (res, json)=>{
       const body = json.body;
-      cb(body);
+      if(body){
+        cb(body);
+      }
+      else{
+        cb(false);
+      }
+      
     })
   },
 
@@ -38,9 +44,14 @@ const F = {
   getBallDate(html){
     const reg = new RegExp('<td align="right">([0-9\-]{10})(\.+)</td>', 'g');
     const ma = html.match(reg);
-    const rs = ma[0].match(/[0-9\-]{10}/g);
 
-    return rs[0];
+    if(ma && ma[0]){
+      const rs = ma[0].match(/[0-9\-]{10}/g);
+
+      return rs[0];
+    }
+    
+    return null;
   },
 
   buildSchema(schema){
@@ -99,12 +110,25 @@ class SSQ {
     this.config.year = key.substr(0, 4);
   }
 
-  requestBallData(cb){
+  requestBallData(cb, fcb){
     F.getHtmlByUrl(this.config.url, (html)=>{
-      this.blue = F.getBlueBall(html);
-      this.red = F.getRedBall(html); 
-      this.config.date = F.getBallDate(html);
-      cb();
+      if(!html){
+        fcb();
+      }
+      else{
+        this.blue = F.getBlueBall(html);
+        this.red = F.getRedBall(html); 
+        this.config.date = F.getBallDate(html);
+
+        if(this.blue && this.red && this.config.date){
+          cb();
+        }
+        else{
+          fcb(true);
+        }
+        
+      }
+      
     });
   } 
 
@@ -131,23 +155,25 @@ class SSQ {
 };
 
 const D = [
-  [2019001, 2019063],
-  [2018001, 2018153],
-  [2017001, 2017154],
-  [2016001, 2016153],
-  [2015001, 2015154],
-  [2014001, 2014152],
-  [2013001, 2013154],
-  [2012001, 2012154],
-  [2011001, 2011153],
-  [2010001, 2010153],
-  [2009001, 2009154],
-  [2008001, 2008154],
-  [2007001, 2007153],
-  [2006001, 2006154],
-  [2005001, 2005153],
-  [2004001, 2004122],
-  [2003001, 2003089]
+  [2019063, 2019154],
+
+  // [2019001, 2019063],
+  // [2018001, 2018153],
+  // [2017001, 2017154],
+  // [2016001, 2016153],
+  // [2015001, 2015154],
+  // [2014001, 2014152],
+  // [2013001, 2013154],
+  // [2012001, 2012154],
+  // [2011001, 2011153],
+  // [2010001, 2010153],
+  // [2009001, 2009154],
+  // [2008001, 2008154],
+  // [2007001, 2007153],
+  // [2006001, 2006154],
+  // [2005001, 2005153],
+  // [2004001, 2004122],
+  // [2003001, 2003089]
 ];
 
 (async ()=>{
@@ -183,6 +209,24 @@ const D = [
       await loop();
 
       
+    }, async (flag)=>{
+      if(flag){
+        console.log('----- success -----');
+        return false;
+      }
+
+      min++;
+      if(min>max){
+        index++;
+        let tmp = D[index];
+        if(!tmp){
+          console.log('----- success -----');
+          return false;
+        }
+        min = tmp[0];
+        max = tmp[1];
+      }
+      await loop();
     });
   }
 

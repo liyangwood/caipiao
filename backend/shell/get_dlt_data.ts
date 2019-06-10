@@ -39,9 +39,14 @@ const F = {
   getBallDate(html){
     const reg = new RegExp('<td align="right" class=normal>([0-9\-]{10})(\.+)</td>', 'g');
     const ma = html.match(reg);
-    const rs = ma[0].match(/[0-9\-]{10}/g);
 
-    return rs[0];
+    if(ma && ma[0]){
+      const rs = ma[0].match(/[0-9\-]{10}/g);
+
+      return rs[0];
+    }
+    
+    return null;
   },
 
   buildSchema(schema){
@@ -102,12 +107,20 @@ class DLT {
     this.config.year = key.substr(0, 4);
   }
 
-  requestBallData(cb){
+  requestBallData(cb, fcb){
     F.getHtmlByUrl(this.config.url, (html)=>{
+      if(!html){
+        fcb();
+      }
       this.blue = F.getBlueBall(html);
       this.red = F.getRedBall(html); 
       this.config.date = F.getBallDate(html);
-      cb();
+      if(this.blue && this.red && this.config.date){
+        cb();
+      }
+      else{
+        fcb(true);
+      }
     });
   } 
 
@@ -136,19 +149,21 @@ class DLT {
 };
 
 const D = [
-  [2019001, 2019063],
-  [2018001, 2018154],
-  [2017001, 2017153],
-  [2016001, 2016154],
-  [2015001, 2015153],
-  [2014001, 2014154],
-  [2013001, 2013153],
-  [2012001, 2012154],
-  [2011001, 2011154],
-  [2010001, 2010153],
-  [2009001, 2009153],
-  [2008001, 2008154],
-  [2007001, 2007093]
+  [2019063, 20190154],
+
+  // [2019001, 2019063],
+  // [2018001, 2018154],
+  // [2017001, 2017153],
+  // [2016001, 2016154],
+  // [2015001, 2015153],
+  // [2014001, 2014154],
+  // [2013001, 2013153],
+  // [2012001, 2012154],
+  // [2011001, 2011154],
+  // [2010001, 2010153],
+  // [2009001, 2009153],
+  // [2008001, 2008154],
+  // [2007001, 2007093]
 ];
 
 (async ()=>{
@@ -184,6 +199,23 @@ const D = [
       await loop();
 
       
+    }, async (flag)=>{
+      if(flag){
+        console.log('----- success -----');
+        return false;
+      }
+      min++;
+      if(min>max){
+        index++;
+        let tmp = D[index];
+        if(!tmp){
+          console.log('----- success -----');
+          return false;
+        }
+        min = tmp[0];
+        max = tmp[1];
+      }
+      await loop();
     });
   }
 

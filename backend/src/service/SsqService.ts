@@ -70,6 +70,9 @@ export default class extends Base {
     const s = math.inRange(red_arr, 1, 12);
     const m = math.inRange(red_arr, 12, 23);
     const b = math.inRange(red_arr, 23, 34);
+
+    const prime = _.filter(red_arr, (x)=>math.checkPrime(x));
+
     const rs = {
       sum : math.sum(red_arr),
       average : math.average(red_arr),
@@ -83,7 +86,9 @@ export default class extends Base {
       in_middle : m,
       in_middle_len : _.size(m),
       in_big : b,
-      in_big_len : _.size(b)
+      in_big_len : _.size(b),
+      prime,
+      prime_len : _.size(prime)
     };
 
     return rs;

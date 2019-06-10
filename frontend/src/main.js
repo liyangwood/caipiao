@@ -4,11 +4,14 @@ import router from './router';
 import store from './store';
 import VueI18n from 'vue-i18n';
 import language from './i18n';
+import ElementUI from 'element-ui';
 
+import 'element-ui/lib/theme-chalk/index.css';
 import 'font-awesome/css/font-awesome.min.css';
 import './style/index.scss';
 
 Vue.use(VueI18n)
+Vue.use(ElementUI);
 Vue.config.productionTip = false;
 
 const dl = navigator.language === 'zh-CN' ? 'zh' : 'en';
