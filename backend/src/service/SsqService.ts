@@ -55,6 +55,48 @@ export default class extends Base {
     return list;
   }
 
+  public async getHappenRateByNumber(number_string: string, isBlue=false){
+    const list = [];
+    if(isBlue){
+      list.push({
+        key : number_string,
+        query : {
+          blue : number_string
+        }
+      })
+    }
+    else{
+      const tmp = number_string.split('|');
+      _.each(tmp, (item)=>{
+        list.push({
+          key : item,
+          query : {
+            red : {
+              $all : item.split(',')
+            }
+          }
+        });
+      });
+    }
+
+    const db_ssq = this.getDBModel(DB_NAME.SSQ);
+
+    const rs:any = {};
+    rs.total = await db_ssq.count({});
+
+    for(let i=0, len=list.length; i<len; i++){
+      const item = list[i];
+      const times = await db_ssq.count(item.query);
+      rs[item.key] = {
+        times,
+        rate : times/rs.total
+      };
+    }
+
+
+    return rs;
+  }
+
 
 
 

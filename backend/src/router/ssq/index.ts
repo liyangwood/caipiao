@@ -1,6 +1,7 @@
 import Base from '../Base';
 import list from './list';
 import count from './count';
+import number_rate from './number_rate';
 
 export default Base.setRouter([
   {
@@ -11,6 +12,11 @@ export default Base.setRouter([
   {
     path : '/count',
     router : count,
+    method : 'get'
+  },
+  {
+    path : '/number_rate',
+    router : number_rate,
     method : 'get'
   }
 ])

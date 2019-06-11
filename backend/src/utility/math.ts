@@ -110,3 +110,11 @@ export const checkPrime = (number: number)=>{
 
   return true;
 }
+
+export const factorial = (n: number)=>{
+  let rs = 1;
+  for(let i=1; i<n+1; i++){
+    rs *= i;
+  }
+  return rs;
+}
