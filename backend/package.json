@@ -44,7 +44,7 @@
     "querystring": "0.2.0",
     "request": "2.88.0",
     "uuid": "^3.2.1",
-    "validator": "11.0.0"
+    "validator": "13.7.0"
   },
   "devDependencies": {
     "@types/http-status": "0.2.30",
